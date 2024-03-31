@@ -27,24 +27,26 @@ def save_diary():
     content_receive = request.form.get('content_give')
 
     today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
     file = request.files['file_give']
     extension = file.filename.split('.')[-1]
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-    filename = f'static/profile-{mytime}.{extension}'
+    filename = f'static/post-{mytime}.{extension}'
     file.save(filename)
 
     profile = request.files['profile_give']
     extension = profile.filename.split('.')[-1]
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
     profilename = f'static/profile-{mytime}.{extension}'
     profile.save(profilename)
+
+    time =today.strftime('%Y.%m.%d')
 
     doc = {
         'file':filename,
         'profile':profilename,
         'title':title_receive,
-        'content':content_receive
+        'content':content_receive,
+        'time' : time,
     }
     db.diary.insert_one(doc)
 
